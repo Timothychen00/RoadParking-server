@@ -1,6 +1,6 @@
 
 from flask_restful import Resource,reqparse
-from server.models import User
+from server.models import User,Machine
 
 # need DB schema and User data schema
 
@@ -79,17 +79,24 @@ class MachineAPI(Resource):
     
     def post(self):
         args = self.parser.parse_args()
-        data={
-            'spaceid':args['spaceid'],
-            'stats':args['stats'],
-            'license_plate':args['license_plate'],
-        }
-        result=DB.db.users.insert_one(data)
-        return {'已添加的id':result.inserted_id}
+        result = Machine.create_machine(args)
+        return result
 
     def delete(self):
-        pass
+        args = self.parser.parse_args()
+        result=Machine.delete_machine({args['key']:args['value']})
+        return result
+        
     def put(self):
-        pass
+        args = self.parser.parse_args()
+        data={}
+        for i in ['type','status','position_x','position_y','ip','mac']:
+            data[i]=args[i]
+
+        result = Machine.edit_machine({args['key']:args['value']},data)
+        return result
+        
     def get(self):
-        pass
+        args = self.parser.parse_args()
+        result = Machine.get_machine({args['key']:args['value']})
+        return result

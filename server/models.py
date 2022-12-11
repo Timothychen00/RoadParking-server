@@ -7,12 +7,12 @@ class DB():
     client=pymongo.MongoClient("mongodb+srv://admin:"+os.environ['DB_PASS']+"@roadparking.zgcphsq.mongodb.net/?retryWrites=true&w=majority",tls=True,tlsAllowInvalidCertificates=True)
     db=client.RoadParking
 
-def check_document(key_value,isSingle:bool=True):# 返回值都是err的錯誤
+def check_document(collection='users',key_value={},isSingle:bool=True):# 返回值都是err的錯誤
     '''
     to do a simple check of all the files in the databse
     '''
     if len(key_value) or not isSingle:
-        counts=DB.db.users.count_documents(key_value)
+        counts=DB.db[collection].count_documents(key_value)
         if counts==0:
             return {'err':'not found'}
         # >0
@@ -51,36 +51,39 @@ class Machine:
             'ip':'',
             'mac':'',
         }
+        print(args)
+        
         for key in data:
-            if key in data:
+            if key in args:
+                print(key)
                 data[key]=args[key]
-            if 'position_x' in args and 'position_y' in args:
-                data['position']=[args['position_x'],args['position_y']]
+        if 'position_x' in args and 'position_y' in args:
+            data['position']=[args['position_x'],args['position_y']]
         print(data)
-        result=DB.db.machine.insert_one(data)
+        result=DB.db['machine'].insert_one(data)
         return {'data':data}
     
-    def delete_user(key_value:dict,isSingle=True):
-        result = check_document(key_value,isSingle)
+    def delete_machine(key_value:dict,isSingle=True):
+        result = check_document('machine',key_value,isSingle)
         if not result['err']:
             if isSingle:
-                DB.db.machine.delete_one(key_value)
+                DB.db['machine'].delete_one(key_value)
             else:
                 DB.db.machine.delete_many(key_value)
             return 'deleted'
         return result['err']
     
     def edit_machine(key_value:dict,data):
-        result = check_document(key_value,isSingle=True)
+        result = check_document('machine',key_value,isSingle=True)
         if not result['err']:
-            DB.db.users.update_one(key_value,{'$set':data})
+            DB.db['machine'].update_one(key_value,{'$set':data})
             return 'edit successfully'
         return result['err']
         
     def get_machine(key_value,isSingle=False):
-        result = check_document(key_value,isSingle)
+        result = check_document('machine',key_value,isSingle)
         if not result['err']:
-            data=DB.db.users.find(key_value)
+            data=DB.db['machine'].find(key_value)
             return list(data)
         return result['err']
 
@@ -98,29 +101,29 @@ class User:
             if key in args:
                 data[key]=args[key]
         print(data)
-        result=DB.db.users.insert_one(data)
+        result=DB.db['users'].insert_one(data)
         return {'data':data}
     
     def delete_user(key_value:dict,isSingle=True):
-        result = check_document(key_value,isSingle=isSingle)
+        result = check_document('users',key_value,isSingle=isSingle)
         if not result['err']:
             if isSingle:
-                DB.db.users.delete_one(key_value)
+                DB.db['users'].delete_one(key_value)
             else:
-                DB.db.users.delete_many(key_value)
+                DB.db['users'].delete_many(key_value)
             return 'deleted'
         return result['err']
 
     def edit_user(key_value,data):
-        result = check_document(key_value,isSingle=True)
+        result = check_document('users',key_value,isSingle=True)
         if not result['err']:
-            DB.db.users.update_one(key_value,{'$set':data})
+            DB.db['users'].update_one(key_value,{'$set':data})
             return 'edit successfully'
         return result['err']
     
     def get_user(key_value,isSingle=False):
-        result = check_document(key_value,isSingle)
+        result = check_document('users',key_value,isSingle)
         if not result['err']:
-            data=DB.db.users.find(key_value)
+            data=DB.db['users'].find(key_value)
             return list(data)
         return result['err']

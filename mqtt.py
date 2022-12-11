@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
 # 建立連線（接收到 CONNACK）的回呼函數
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -21,7 +23,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 # 設定登入帳號密碼（若無則可省略）
-client.username_pw_set("timothy","123123123")
+client.username_pw_set("timothy",os.environ['MQTT_PASS'])
 
 # 連線至 MQTT 伺服器（伺服器位址,連接埠）
 client.connect("mqtt.ckcsc.net", 5900)
