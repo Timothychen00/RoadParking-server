@@ -12,8 +12,8 @@ app=Flask(__name__)
 app.secret_key=os.urandom(16).hex()
 app.config['MQTT_BROKER_URL'] = 'mqtt.ckcsc.net'
 app.config['MQTT_BROKER_PORT'] = 5900
-app.config['MQTT_USERNAME'] = ''
-app.config['MQTT_PASSWORD'] = ''
+app.config['MQTT_USERNAME'] = os.environ['MQTT_USER']
+app.config['MQTT_PASSWORD'] = os.environ['MQTT_PASS']
 app.config['MQTT_KEEPALIVE'] = 5
 app.config['MQTT_TLS_ENABLED'] = False
 
@@ -37,6 +37,11 @@ def handle_mqtt_message(client, userdata, message):
         payload=message.payload.decode()
     )
     print(data['payload'])
+    
+    if data['topic']=='RoadParking/Machine':# update for each machine status
+        pass
+    elif data['topic']=='RoadParking/Parking':# update for each parking space
+        pass
 
 if __name__=='__main__':
     app.run(debug=True,port=5000)
