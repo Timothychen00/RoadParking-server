@@ -33,8 +33,6 @@ class Parking:
             'machine' : ""
         }
         
-        print(args)
-        
         for key in data:
             if key in args:
                 data[key]=args[key]

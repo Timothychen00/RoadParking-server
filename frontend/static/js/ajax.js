@@ -48,10 +48,17 @@ function inject_html(data) {
 			//change title
 			title_label=['_id','type','status','position','ip','mac','delete'];
 			title.innerHTML='';
+			status_tag='';
+			//status
+			if (data[i]['status']=='alive')
+				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> alive</td>';
+			else
+				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> lost</td>';
+			//generate title label
 			for(let k in title_label)
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
 			
-			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["type"] + "</a></td><td>" + data[i]["status"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>\
+			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["position"] + "</td><td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>\
 			<td>\
 			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
 				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\
@@ -85,6 +92,42 @@ function inject_html(data) {
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
 
 			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>\
+			<td>\
+			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
+				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\
+			<div class="modal fade" id="exampleModal'+ data[i]['_id'] + '" tabindex="-1"\
+				aria-labelledby="exampleModalLabel" aria-hidden="true">\
+				<div class="modal-dialog">\
+					<div class="modal-content">\
+						<div class="modal-header">\
+							<h5 class="modal-title" id="exampleModalLabel">確認刪除？</h5>\
+							<button type="button" class="btn-close" data-bs-dismiss="modal"\
+								aria-label="Close"></button>\
+						</div>\
+						<div class="modal-body">\
+							<p class="fw-bold">請注意！刪除後將無法復原！</p>\
+						</div>\
+						<div class="modal-footer">\
+							<button type="button" class="btn btn-secondary"\
+								data-bs-dismiss="modal">取消</button>\
+							<button type="button" class="btn btn-danger"\
+								onclick="delete_data(\''+ data[i]['_id'] + '\')" >確認刪除</button>\
+						</div>\
+					</div>\
+				</div>\
+			</div>\
+			</td></tr>';
+		}else if (window.model=='parking'){
+			title_label=['_id','status','license_plate','machine','delete'];
+			title.innerHTML='';
+			if (data[i]['status']=='empty')
+				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> empty</td>';
+			else
+				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> inuse</td>';
+			for(let k in title_label)
+				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
+
+			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["machine"] + '</td>\
 			<td>\
 			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
 				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\

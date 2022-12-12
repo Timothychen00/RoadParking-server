@@ -1,6 +1,6 @@
 
 from flask_restful import Resource,reqparse
-from server.models import User,Machine
+from server.models import User,Machine,Parking
 from flask import jsonify
 
 # need DB schema and User data schema
@@ -43,29 +43,45 @@ class UserAPI(Resource):
         result = User.get_user(filter)
         return result
 
+
 class ParkingAPI(Resource):
-    pass
-#     parser=reqparse.RequestParser()
-#     parser.add_argument('spaceid',type=str,location=['values'])
-#     parser.add_argument('license_plate',type=str,location=['values'])
-#     parser.add_argument('stats',type=str,location=['values'])
+    parser=reqparse.RequestParser()
+    parser.add_argument('spaceid',type=str,location=['values'])
+    parser.add_argument('license_plate',type=str,location=['values'])
+    parser.add_argument('stats',type=str,location=['values'])
     
-#     def post(self):
-#         args = self.parser.parse_args()
-#         data={
-#             'spaceid':args['spaceid'],
-#             'stats':args['stats'],
-#             'license_plate':args['license_plate'],
-#         }
-#         result=DB.db.users.insert_one(data)
-#         return {'已添加的id':result.inserted_id}
+    parser.add_argument('key',type=str,location=['values'])
+    parser.add_argument('value',type=str,location=['values'])
     
-#     def delete(self):
-#         pass
-#     def put(self):
-#         pass
-#     def get(self):
-#         pass
+    def post(self):
+        args = self.parser.parse_args()
+        result = Parking.create_parking(args)
+        return result
+
+    def delete(self):
+        args = self.parser.parse_args()
+        result=Parking.delete_parking({args['key']:args['value']})
+        return result
+        
+    def put(self):
+        args = self.parser.parse_args()
+        data={}
+        for i in ['type','status','position_x','position_y','ip','mac']:
+            data[i]=args[i]
+
+        result = Parking.edit_parking({args['key']:args['value']},data)
+        return result
+        
+    def get(self):
+        args = self.parser.parse_args()
+        
+        filter = {}
+        if args['key']:
+            filter = {args['key']:args['value']}
+        result = Parking.get_parking(filter)
+        print(result)
+        return result
+    
     
 class MachineAPI(Resource):
     parser=reqparse.RequestParser()
