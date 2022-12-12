@@ -1,11 +1,10 @@
-import os
+import os,json
 from flask import Flask
-from server.routes import app_route
 from flask_restful import Api,Resource
 from server.api import UserAPI,MachineAPI,ParkingAPI
 from server.models import User,Machine,Parking
 from flask_mqtt import Mqtt
-import json
+from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -21,7 +20,7 @@ app.config['MQTT_TLS_ENABLED'] = False
 
 api = Api(app)
 mqtt = Mqtt(app)
-app.register_blueprint(app_route)
+CORS(app,resources={r"/api/*": {"origins": "*"}}) # enable cross origin resource sharing policy
 
 # setup for restful API interface
 api.add_resource(UserAPI,'/api/user')
@@ -53,4 +52,4 @@ def handle_mqtt_message(client, userdata, message):
         pass
 
 if __name__=='__main__':
-    app.run(port=5000)
+    app.run(port=8000)

@@ -1,6 +1,7 @@
 
 from flask_restful import Resource,reqparse
 from server.models import User,Machine
+from flask import jsonify
 
 # need DB schema and User data schema
 
@@ -38,7 +39,6 @@ class UserAPI(Resource):
         args = self.parser.parse_args()
         result = User.get_user({args['key']:args['value']})
         return result
-    
 
 class ParkingAPI(Resource):
     pass
@@ -98,5 +98,12 @@ class MachineAPI(Resource):
         
     def get(self):
         args = self.parser.parse_args()
-        result = Machine.get_machine({args['key']:args['value']})
+        
+        filter = {}
+        print(2)
+        if args['key']:
+            print(1)
+            filter = {args['key']:args['value']}
+        result = Machine.get_machine(filter)
+        print(result)
         return result
