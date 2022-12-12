@@ -12,9 +12,9 @@ data={
 
 
 
-# print(User.create_user(data))
-result=User.get_user({})
-print(result,len(result))
+print(User.create_user(data))
+# result=User.get_user({})
+# print(result,len(result))
 
 
 

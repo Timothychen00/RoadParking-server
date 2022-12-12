@@ -37,7 +37,10 @@ class UserAPI(Resource):
     
     def get(self):# not limited to single document
         args = self.parser.parse_args()
-        result = User.get_user({args['key']:args['value']})
+        filter = {}
+        if args['key']:
+            filter = {args['key']:args['value']}
+        result = User.get_user(filter)
         return result
 
 class ParkingAPI(Resource):
@@ -100,9 +103,7 @@ class MachineAPI(Resource):
         args = self.parser.parse_args()
         
         filter = {}
-        print(2)
         if args['key']:
-            print(1)
             filter = {args['key']:args['value']}
         result = Machine.get_machine(filter)
         print(result)

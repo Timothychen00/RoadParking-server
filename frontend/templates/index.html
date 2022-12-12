@@ -97,13 +97,13 @@
 
         <div class="row mt-3 ps-2 pe-lg-2 pe-0 " style="height: 85%;">
             <div class="col-2 px-lg-3 px-0" id="dashboard">
-                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3">
+                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3" onclick="set('user')">
                     <b class="word">User</b>
                 </div>
-                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3">
+                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3" onclick="set('parking')">
                     <b class="word">Parking</b>
                 </div>
-                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3">
+                <div class="function_button p-2 d-flex align-items-center justify-content-center shadow mb-3" onclick="set('machine')">
                     <b class="word">Machine</b>
                 </div>
             </div>
@@ -112,22 +112,23 @@
                 <div class="card-header py-1" style="background-color: #f8f9fc;position:sticky">
                     <ul class="nav nav-pills card-header-pills text-center" >
                         <li class="nav-item me-2 ">
-                            <a class="nav-link" href="#"  id="last" style="width: 100px" onclick="load_data('last');">上月</a>
+                            <a class="nav-link" href="#"  id="label" style="width: 100px" ></a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link " href="#" id="this" style="width: 100px" onclick="load_data('this');">本月</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="div card-body" style="overflow:scroll;">
                     <table class=" table text-start ">
                         <thead style="width: 100%;position:sticky !important;">
-                            <tr>
+                            <tr id="title" >
                                 <th scope="col">_id</th>
-                                <th scope="col" style="min-height:100px!important;">名稱</th>
-                                <th scope="col" style="min-height:100px!important;">工作地點</th>
-                                <th scope="col" style="min-height:100px!important;">上班時數</th>
-                                <th scope="col" style="min-height:100px!important;">加班時數</th>
+                                <th scope="col" style="min-height:100px!important;">型號</th>
+                                <th scope="col" style="min-height:100px!important;">狀態</th>
+                                <th scope="col" style="min-height:100px!important;">位置</th>
+                                <th scope="col" style="min-height:100px!important;">ip</th>
+                                <th scope="col" style="min-height:100px!important;">mac</th>
                                 <th scope="col">刪除</th>
                             </tr>
                         </thead>
