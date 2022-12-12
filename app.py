@@ -3,6 +3,7 @@ from flask import Flask
 from server.routes import app_route
 from flask_restful import Api,Resource
 from server.api import UserAPI,MachineAPI,ParkingAPI
+from server.models import User,Machine,Parking
 from flask_mqtt import Mqtt
 import json
 from dotenv import load_dotenv
@@ -45,7 +46,8 @@ def handle_mqtt_message(client, userdata, message):
         #ip
         #other information
         json_data=json.loads(data['payload'])
-        print(json_data)
+        # json_data [key_value, data]
+        Machine.edit_machine(json_data[0],json_data[1])
         pass
     elif data['topic']=='RoadParking/Parking':# update for each parking space
         pass
