@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 # 建立 MQTT Client 物件
-client = mqtt.Client()
+client = mqtt.Client('hello')
 
 
 
@@ -18,6 +18,6 @@ client.username_pw_set("timothy",os.environ['MQTT_PASS'])
 client.connect("mqtt.ckcsc.net", 5900,60)
 # 發布訊息至 hello/world 主題
 # client.loop_start()
-client.publish("RoadParking/Parking", 'Timothychen',qos=2,retain=False)
+client.publish("RoadParking/Machine", '{"type":"esp8266"}',qos=2,retain=False)
 client.loop_forever()
 print(1)
