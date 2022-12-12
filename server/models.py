@@ -1,7 +1,9 @@
-from flask_restful import Resource, reqparse
 from dotenv import load_dotenv
 import pymongo,os
 load_dotenv()
+
+# isSingle True  =1
+# ISingle False  >=1
 
 class DB():
     client=pymongo.MongoClient("mongodb+srv://admin:"+os.environ['DB_PASS']+"@roadparking.zgcphsq.mongodb.net/?retryWrites=true&w=majority",tls=True,tlsAllowInvalidCertificates=True)
@@ -22,24 +24,49 @@ def check_document(collection='users',key_value={},isSingle:bool=True):# 返回�
         return {'err':None}
     return {'err':'key and value are required for checking documents'}
 
-# class Parking:
+class Parking:
+    def create_parking(args:dict):
+        data = {
+            '_id' : "",
+            'status' : "", # empty or inuse 
+            'license_plate' : "",
+            'machine' : ""
+        }
+        
+        print(args)
+        
+        for key in data:
+            if key in args:
+                data[key]=args[key]
+        print(data)
+        result=DB.db['parking'].insert_one(data)
+        return {'data':data}
+        
+
+    def delete_parking(key_value:dict,isSingle=True):
+        result = check_document('parking',isSingle)
+        if not result['err']:
+            if isSingle:
+                DB.db['parking'].delete_one(key_value)
+            else:
+                DB.db['parking'].delete_many(key_value)
+            return 'deleted'
+        return result['err']
     
-#     def post(self):
-#         args = self.parser.parse_args()
-#         data={
-#             'spaceid':args['spaceid'],
-#             'stats':args['stats'],
-#             'license_plate':args['license_plate'],
-#         }
-#         result=DB.db.users.insert_one(data)
-#         return {'已添加的id':result.inserted_id}
+    def edit_parking(key_value:dict,data):
+        result = check_document('parking',key_value,isSingle=True)
+        if not result['err']:
+            DB.db['parking'].update_one(key_value,{'$set':data})
+            return 'edit successfully'
+        return result['err']
     
-#     def delete(self):
-#         pass
-#     def put(self):
-#         pass
-#     def get(self):
-#         pass
+    def get_parking(key_value:dict,isSingle=False):
+        result = check_document('parking',key_value,isSingle)
+        if not result['err']:
+            data=DB.db['parking'].find(key_value)
+            return list(data)
+        return result['parking']
+    
 
 class Machine:
     def create_machine(args:dict):
@@ -69,7 +96,7 @@ class Machine:
             if isSingle:
                 DB.db['machine'].delete_one(key_value)
             else:
-                DB.db.machine.delete_many(key_value)
+                DB.db['parking'].delete_many(key_value)
             return 'deleted'
         return result['err']
     
@@ -86,7 +113,6 @@ class Machine:
             data=DB.db['machine'].find(key_value)
             return list(data)
         return result['err']
-
 
 class User:
     def create_user(args:dict):
