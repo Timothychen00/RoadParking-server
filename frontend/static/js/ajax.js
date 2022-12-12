@@ -9,8 +9,9 @@ function load_data() {
 }
 window.onload = ()=>{window.model='machine';load_data()};
 
-function delete_user(model='machine',id) {
-	fetch('http://127.0.0.1:8000/api/'+model, { method: 'DELETE', body: "key=_id&value=" + id, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+function delete_data(id) {
+	console.log(id);
+	fetch('http://127.0.0.1:8000/api/'+window.model, { method: 'DELETE', body: "key=_id&value=" + id, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
 		.then(() => { let users = document.getElementById('users'); users.innerHTML = ''; load_data() });
 	let modalEl = document.getElementById('exampleModal' + id);
 	let mymodal = bootstrap.Modal.getInstance(modalEl);
@@ -45,12 +46,11 @@ function inject_html(data) {
 		if (window.model=='machine')
 		{
 			//change title
-			title_label=['_id','type','status','position','ip','mac','delete']
+			title_label=['_id','type','status','position','ip','mac','delete'];
 			title.innerHTML='';
 			for(let k in title_label)
-			{
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
-			}
+			
 			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["type"] + "</a></td><td>" + data[i]["status"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>\
 			<td>\
 			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
@@ -71,7 +71,7 @@ function inject_html(data) {
 							<button type="button" class="btn btn-secondary"\
 								data-bs-dismiss="modal">取消</button>\
 							<button type="button" class="btn btn-danger"\
-								onclick="delete_user('+ data[i]['_id'] + ')" >確認刪除</button>\
+								onclick="delete_data(\''+ data[i]['_id'] + '\')" >確認刪除</button>\
 						</div>\
 					</div>\
 				</div>\
@@ -79,13 +79,10 @@ function inject_html(data) {
 			</td></tr>';
 		}else if(window.model=='user'){
 			//change title
-			title_label=['_id','name','phone','license_plate','delete']
+			title_label=['_id','name','phone','license_plate','delete'];
 			title.innerHTML='';
 			for(let k in title_label)
-			{
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
-			}
-
 
 			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>\
 			<td>\
@@ -107,7 +104,7 @@ function inject_html(data) {
 							<button type="button" class="btn btn-secondary"\
 								data-bs-dismiss="modal">取消</button>\
 							<button type="button" class="btn btn-danger"\
-								onclick="delete_user('+ data[i]['_id'] + ')" >確認刪除</button>\
+								onclick="delete_data(\''+ data[i]['_id'] + '\')" >確認刪除</button>\
 						</div>\
 					</div>\
 				</div>\
