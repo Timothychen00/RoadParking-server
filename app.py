@@ -38,18 +38,20 @@ def handle_mqtt_message(client, userdata, message):
         topic=message.topic,
         payload=message.payload.decode()
     )
-    print(data['payload'])
     
     if data['topic']=='RoadParking/Machine':# update for each machine status
         #status
         #ip
         #other information
         json_data=json.loads(data['payload'])
+        print(json_data)
         # json_data [key_value, data]
-        Machine.edit_machine(json_data[0],json_data[1])
+        for i in json_data:
+            print(i[0],i[1])
+            print(Machine.edit_machine(i[0],i[1]))
         pass
     elif data['topic']=='RoadParking/Parking':# update for each parking space
         pass
 
 if __name__=='__main__':
-    app.run(port=8000)
+    app.run(port=8000,debug=False)

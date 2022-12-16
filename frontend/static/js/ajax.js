@@ -8,6 +8,7 @@ function load_data() {
 		});
 }
 window.onload = ()=>{window.model='machine';load_data()};
+window.setInterval(load_data,2000);
 
 function delete_data(id) {
 	console.log(id);
