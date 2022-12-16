@@ -13,6 +13,7 @@ def check_document(collection='users',key_value={},isSingle:bool=True):# 返回�
     '''
     to do a simple check of all the files in the databse
     '''
+    print(key_value)
     if len(key_value) or not isSingle:
         counts=DB.db[collection].count_documents(key_value)
         if counts==0:
@@ -29,6 +30,7 @@ class Parking:
         data = {
             '_id' : "",
             'status' : "", # empty or inuse 
+            'position':[],
             'license_plate' : "",
             'machine' : ""
         }
@@ -36,13 +38,15 @@ class Parking:
         for key in data:
             if key in args:
                 data[key]=args[key]
+        if 'position_x' in args and 'position_y' in args:
+            data['position']=[args['position_x'],args['position_y']]
         print(data)
         result=DB.db['parking'].insert_one(data)
         return {'data':data}
         
 
     def delete_parking(key_value:dict,isSingle=True):
-        result = check_document('parking',isSingle)
+        result = check_document('parking',key_value,isSingle)
         if not result['err']:
             if isSingle:
                 DB.db['parking'].delete_one(key_value)
@@ -63,7 +67,10 @@ class Parking:
         if not result['err']:
             data=DB.db['parking'].find(key_value)
             return list(data)
-        return result['parking']
+        
+        if result['err']=='not found':
+            return []
+        return result['err']
     
 
 class Machine:
@@ -72,7 +79,6 @@ class Machine:
             '_id':'',
             'type':'',
             'status':'',
-            'postion':[],#position in args is parse to position_x and position_y
             'ip':'',
             'mac':'',
         }
@@ -82,8 +88,6 @@ class Machine:
             if key in args:
                 print(key)
                 data[key]=args[key]
-        if 'position_x' in args and 'position_y' in args:
-            data['position']=[args['position_x'],args['position_y']]
         print(data)
         result=DB.db['machine'].insert_one(data)
         return {'data':data}
@@ -110,6 +114,9 @@ class Machine:
         if not result['err']:
             data=DB.db['machine'].find(key_value)
             return list(data)
+        
+        if result['err']=='not found':
+            return []
         return result['err']
 
 class User:
@@ -150,4 +157,7 @@ class User:
         if not result['err']:
             data=DB.db['users'].find(key_value)
             return list(data)
+        
+        if result['err']=='not found':
+            return []
         return result['err']

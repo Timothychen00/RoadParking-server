@@ -48,6 +48,8 @@ class ParkingAPI(Resource):
     parser.add_argument('spaceid',type=str,location=['values'])
     parser.add_argument('license_plate',type=str,location=['values'])
     parser.add_argument('stats',type=str,location=['values'])
+    parser.add_argument('position_x',type=str,location=['values'])
+    parser.add_argument('position_y',type=str,location=['values'])
     
     parser.add_argument('key',type=str,location=['values'])
     parser.add_argument('value',type=str,location=['values'])
@@ -87,8 +89,6 @@ class MachineAPI(Resource):
     parser.add_argument('_id',type=str,location=['values'])
     parser.add_argument('type',type=str,location=['values'])
     parser.add_argument('status',type=str,location=['values'])
-    parser.add_argument('position_x',type=str,location=['values'])
-    parser.add_argument('position_y',type=str,location=['values'])
     parser.add_argument('ip',type=str,location=['values'])
     parser.add_argument('mac',type=str,location=['values'])
     # use for search
@@ -108,7 +108,7 @@ class MachineAPI(Resource):
     def put(self):
         args = self.parser.parse_args()
         data={}
-        for i in ['type','status','position_x','position_y','ip','mac']:
+        for i in ['type','status','ip','mac']:
             data[i]=args[i]
 
         result = Machine.edit_machine({args['key']:args['value']},data)

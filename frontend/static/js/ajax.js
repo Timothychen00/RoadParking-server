@@ -1,12 +1,20 @@
 
 function load_data() {
-	fetch('http://127.0.0.1:8000/api/'+window.model, { method: "GET",mode: 'cors' })
-		.then((response) => {console.log(response);return response.json()})
-		.then((jsonData) => (inject_html(jsonData)))//講資料植入html
-		.catch((err) => {
-			console.log('錯誤:', err);
-		});
+	console.log(window.isClick);
+	if(!window.isClick){
+		fetch('http://127.0.0.1:8000/api/'+window.model, { method: "GET",mode: 'cors' })
+			.then((response) => {console.log(response);return response.json()})
+			.then((jsonData) => (inject_html(jsonData)))//講資料植入html
+			.catch((err) => {
+				console.log('錯誤:', err);
+			});
+	}
 }
+
+// window.onclick=console.log(1);
+
+// document.getElementById('user').addEventListener("click",()=>{window.isClick=true});
+window.isClick=false;
 window.onload = ()=>{window.model='machine';load_data()};
 window.setInterval(load_data,2000);
 
@@ -17,6 +25,7 @@ function delete_data(id) {
 	let modalEl = document.getElementById('exampleModal' + id);
 	let mymodal = bootstrap.Modal.getInstance(modalEl);
 	mymodal.hide();
+	window.isClick=false;
 }
 
 // function insert_user() {
@@ -47,7 +56,7 @@ function inject_html(data) {
 		if (window.model=='machine')
 		{
 			//change title
-			title_label=['_id','type','status','position','ip','mac','delete'];
+			title_label=['_id','type','status','ip','mac','delete'];
 			title.innerHTML='';
 			status_tag='';
 			//status
@@ -59,9 +68,9 @@ function inject_html(data) {
 			for(let k in title_label)
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
 			
-			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["position"] + "</td><td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>\
+			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>\
 			<td>\
-			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
+			<button type="button" class="btn btn-danger " onclick="window.isClick=true;" data-bs-toggle="modal"\
 				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\
 			<div class="modal fade" id="exampleModal'+ data[i]['_id'] + '" tabindex="-1"\
 				aria-labelledby="exampleModalLabel" aria-hidden="true">\
@@ -87,14 +96,14 @@ function inject_html(data) {
 			</td></tr>';
 		}else if(window.model=='user'){
 			//change title
-			title_label=['_id','name','phone','license_plate','delete'];
+			title_label=['_id','name','position','phone','license_plate','delete'];
 			title.innerHTML='';
 			for(let k in title_label)
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
 
-			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>\
+			users.innerHTML += "<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["position"] + "</td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>\
 			<td>\
-			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
+			<button type="button" class="btn btn-danger" onclick="window.isClick=true;" data-bs-toggle="modal"\
 				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\
 			<div class="modal fade" id="exampleModal'+ data[i]['_id'] + '" tabindex="-1"\
 				aria-labelledby="exampleModalLabel" aria-hidden="true">\
@@ -119,7 +128,7 @@ function inject_html(data) {
 			</div>\
 			</td></tr>';
 		}else if (window.model=='parking'){
-			title_label=['_id','status','license_plate','machine','delete'];
+			title_label=['_id','status','license_plate','position','machine','delete'];
 			title.innerHTML='';
 			if (data[i]['status']=='empty')
 				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> empty</td>';
@@ -128,9 +137,9 @@ function inject_html(data) {
 			for(let k in title_label)
 				title.innerHTML+='<th scope="col" style="min-height:100px!important;">'+title_label[k]+'</th>';
 
-			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["machine"] + '</td>\
+			users.innerHTML += "<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["machine"] + '</td>\
 			<td>\
-			<button type="button" class="btn btn-danger" data-bs-toggle="modal"\
+			<button type="button" class="btn btn-danger" onclick="window.isClick=true;" data-bs-toggle="modal"\
 				data-bs-target="#exampleModal'+ data[i]['_id'] + '">刪除</button>\
 			<div class="modal fade" id="exampleModal'+ data[i]['_id'] + '" tabindex="-1"\
 				aria-labelledby="exampleModalLabel" aria-hidden="true">\
