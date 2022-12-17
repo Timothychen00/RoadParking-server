@@ -115,3 +115,6 @@
 .active{
     background-color: #4e73df!important;
 }
+#map{
+    height: 100%;
+}
