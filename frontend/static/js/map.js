@@ -1,4 +1,5 @@
-function initMap() {
+function initMap(data) {
+    console.log('init')
     var markers = [];
     var infoWindows = [];
     //設定中心點
@@ -9,38 +10,32 @@ function initMap() {
     var geocoder = new google.maps.Geocoder();
     console.log(geocoder);
 
-    //info windows
-    var info_config = [
+    var info_config = [];
+    var marker_config = [];
 
-        '<h4>車位使用中</h4>' +
-        '<a class="btn btn-danger" href="https://google.com">導航到該車位</a><br>' +
-        '<span>上次更新時間： 00:00</span><br/>',
+    for (let i in data)
+    {
+        data[i];
+        let icon_url="/static/img/yes.png";
+        console.log(i);
+        if (data[i]['status']=='inuse')
+            icon_url="/static/img/no.png";
 
-        '<h4>車位無人使用</h4>' +
-        '<a class="btn btn-success" href="https://google.com">導航到該車位</a><br>' +
-        '<span>上次更新時間： 00:00</span><br/>',
-    ];
-
-    //建立地圖 marker 的集合
-    var marker_config = [{
-        position: { lat: 25.035, lng: 121.519 },
-        icon:
-        {
-            url: "static/img/no.png",
-            scaledSize: new google.maps.Size(50, 50)
-        },
-        map: map,
-        title: '車位1'
-    }, {
-        position: { lat: 25.033, lng: 121.519 },
-        icon:
-        {
-            url: "static/img/yes.png",
-            scaledSize: new google.maps.Size(50, 50)
-        },
-        map: map,
-        title: '車位2'
-    }];
+        marker_config.push(
+            {
+                position:{lng:parseFloat(data[i]['position'][0]),lat:parseFloat(data[i]['position'][1])},
+                icon:{url:icon_url,scaledSize: new google.maps.Size(50, 50)},
+                map: map,
+                title: data[i]['_id']
+            })
+        info_config.push(
+            '<h4>車位使用中</h4>' +
+            '<h6>車位ID:'+data[i]['_id']+'</h6>' +
+            '<a class="btn btn-danger" href="https://www.google.com.tw/maps/dir//'+parseFloat(data[i]['position'][1])+','+parseFloat(data[i]['position'][0])+'/@'+parseFloat(data[i]['position'][1])+','+parseFloat(data[i]['position'][0])+',16z/data=!4m2!4m1!3e0?hl=zh-TW">導航到該車位</a><br>' +
+            '<span>上次更新時間： 00:00</span><br/>',
+        )
+    }
+    console.log(marker_config)
     //設定 Info window 內容
     info_config.forEach(function (e, i) {
         infoWindows[i] = new google.maps.InfoWindow({
