@@ -24,8 +24,6 @@ function load_data(month_type = 'this') {
             place_label.value = res[0]['phone'];
             let jointime_label = document.getElementById('license_plate_label');
             jointime_label.value = res[0]['license_plate'];
-            // console.log(res);
-            // console.log(res[0]["log"][month]);
             let keys ='';
             if (month in res[0]['log'])
                 keys= Object.keys(res[0]["log"][month]);
@@ -34,34 +32,12 @@ function load_data(month_type = 'this') {
             let res_length = keys.length;
             if (res_length>0) {
                 let logs = res[0]['log'][month];
-                // console.log('length');
-                // console.log(res_length  );
-                console.log('logs')
-                console.log(logs);
-                // console.log('keys')
-                // console.log(keys);
-                // console.log('key'+keys[0]);
-                let currentmonth_log = document.getElementById('currentmonth_log');
-                let workday = document.getElementById('workday');
-                let worktime = res[0]['work'][month];
-                let workovertime = res[0]['workover'][month];
-                let worktime_label = document.getElementById('worktime_label');
-                let workovertime_label = document.getElementById('workovertime_label');
-                worktime_label.innerText = worktime[0] + ' hr  ' + worktime[1] + ' m';
-                workovertime_label.innerText = workovertime[0] + ' hr  ' + workovertime[1] + ' m';
-                workday.innerText = res_length + ' 天';
 
-                let total_time = worktime[0] * 60 + worktime[1] + workovertime[0] * 60 + workovertime[1];
-                let time_per = total_time / res_length;
-                // console.log(total_time);
-                let time_per_label = document.getElementById('time_per_label');
-                time_per_label.innerText = Math.floor(time_per / 60) + ' hr ' + Math.floor(time_per % 60) + ' m';
-                //generating html 
                 for (let log = 0; log < res_length; log++) {
-                    // console.log(logs[keys[log]]);
+                    console.log(logs[keys[log]]);
                     currentmonth_log.innerHTML += '\
                 <tr style="height:20px" class="align-text-top">\
-                <td>'+ keys[log] + '</td><td>' + logs[keys[log]]['in'] + '</td><td>' + logs[keys[log]]['out'] + '</td><td>' + logs[keys[log]]['duration'][0][0] + ' hr ' + logs[keys[log]]['duration'][0][1] + ' m</td><td>' + logs[keys[log]]['fee'] + '</td><td>' + logs[keys[log]]['status'] + '</td></tr>\
+                <td>'+ keys[log] + '</td><td>' + logs[keys[log]]['in'] + '</td><td>' + logs[keys[log]]['out'] + '</td><td>' + logs[keys[log]]['duration'][0] + ' hr ' + logs[keys[log]]['duration'][1] + ' m</td><td> NT ' + logs[keys[log]]['fee'] + '</td><td>' + logs[keys[log]]['status'] + '</td></tr>\
                 </tr>';
                 }
             }

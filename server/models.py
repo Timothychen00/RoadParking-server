@@ -68,7 +68,7 @@ class Parking:
                         print(user)
                         log=user['log']
                         month,day,now_time=get_date()
-                        if result['status']=='inuse':#離開，準備更新時間的部分
+                        if data['status']=='empty':#離開，準備更新時間的部分
                             if not month in log:
                                 return '請先將車停入'
                             if not day in log[month]:
@@ -78,9 +78,13 @@ class Parking:
                             d1=datetime.datetime.strptime(log[month][day]['in'],"%H:%M:%S")
                             d2=datetime.datetime.strptime(log[month][day]['out'],"%H:%M:%S")
                             log[month][day]['duration']=[(d2-d1).seconds//3600,((d2-d1).seconds//60)%60]
-                            data['log']=log
+                            
+                            log[month][day]['fee']=log[month][day]['duration'][0]*30
+                            if log[month][day]['duration'][1]>0:
+                                log[month][day]['fee']+=30
+                            
                             # return '記錄完成'
-                            Parking.edit_parking(key_value,{'status':'empty'})
+                            Parking.edit_parking(key_value,{'status':'empty'},overwrite=True)
 
                         else:#開始記錄時間
                             if not month in log:
@@ -89,7 +93,6 @@ class Parking:
                             log[month][day]={'in':'0:0:0','out':'0:0:0','duration':[0,0],'fee':'0','status':'0'}
                             log[month][day]['in']=now_time
                             # log[]
-                            data['log']=log
                             Parking.edit_parking(key_value,{'status':'inuse'},overwrite=True)
                         User.edit_user({'license_plate':data['license_plate']},{'log':log})
                         return 'done'
