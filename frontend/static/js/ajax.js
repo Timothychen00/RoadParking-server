@@ -1,8 +1,7 @@
-
 async function load_data() {
 	console.log(window.isClick);
 	if(!window.isClick){
-		fetch('http://127.0.0.1:8000/api/'+window.model, { method: "GET",mode: 'cors' })
+		fetch('http://127.0.0.1:5000/api/'+window.model, { method: "GET",mode: 'cors' })
 			.then((response) => {return response.json()})
 			.then((jsonData) => {inject_html(jsonData);window.data=jsonData;})//講資料植入html)
 			.catch((err) => {
@@ -10,17 +9,16 @@ async function load_data() {
 				return jsonData;
 			});
 	}
-	
 }
 // window.onclick=console.log(1);
 
 window.isClick=false;
 window.onload = ()=>{window.model='machine';load_data();set('machine')};
-window.setInterval(load_data,20000);
+window.setInterval(load_data,5000);//auto reload 
 
 function delete_data(id) {
 	console.log(id);
-	fetch('http://127.0.0.1:8000/api/'+window.model, { method: 'DELETE', body: "key=_id&value=" + id, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+	fetch('http://127.0.0.1:5000/api/'+window.model, { method: 'DELETE', body: "key=_id&value=" + id, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
 		.then(() => { let users = document.getElementById('users'); users.innerHTML = ''; load_data() });
 	let modalEl = document.getElementById('exampleModal' + id);
 	let mymodal = bootstrap.Modal.getInstance(modalEl);
@@ -62,7 +60,7 @@ function inject_html(data) {
 	if(window.model=='machine')
 		title_label=['_id','type','status','ip','mac','delete']
 	else if (window.model=='user')
-		title_label=['_id','name','position','phone','license_plate','delete']
+		title_label=['_id','name','phone','license_plate','delete']
 	else
 		title_label=['_id','status','license_plate','position','machine','delete'];
 
@@ -81,7 +79,7 @@ function inject_html(data) {
 				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> lost</td>';
 			pre_fill="<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>';
 		}else if(window.model=='user'){
-			pre_fill="<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["position"] + "</td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>';
+			pre_fill="<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>';
 		}else if (window.model=='parking'){
 			if (data[i]['status']=='empty')
 				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> empty</td>';
@@ -130,11 +128,11 @@ async function set(model,mode='list'){
 	load_data();
 }
 
-// function insert_user() {
-// 	fetch('http://127.0.0.1:8000/api/manage', { method: 'POST', body: 'name=' + document.getElementById('name').value + '&place=' + document.getElementById('place').value+'&jointime=' + document.getElementById('jointime').value + '&cardid=' + document.getElementById('cardid').value, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-// 		.then(() => { let users = document.getElementById('users'); users.innerHTML = ''; load_data() });
+function insert_user() {
+	fetch('http://127.0.0.1:5000/api/manage', { method: 'POST', body: 'name=' + document.getElementById('name').value + '&place=' + document.getElementById('place').value+'&jointime=' + document.getElementById('jointime').value + '&cardid=' + document.getElementById('cardid').value, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+		.then(() => { let users = document.getElementById('users'); users.innerHTML = ''; load_data() });
 
-// }
+}
 
 // function search() {
 // 	key = document.getElementById('key').value;
