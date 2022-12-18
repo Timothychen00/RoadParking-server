@@ -15,17 +15,15 @@ function load_data(month_type = 'this') {
         document.getElementById('this').classList.remove('active');
     }
 
-    fetch("/api/user?" + new URLSearchParams({ 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'GET' })
+    fetch("http://127.0.0.1:5000/api/user?" + new URLSearchParams({ 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'GET' })
         .then(res => (res.json()))
         .then((res) => {
             let name_label = document.getElementById('name_label');
             name_label.value = res[0]['name'];
-            let place_label = document.getElementById('place_label');
-            place_label.value = res[0]['place'];
-            let jointime_label = document.getElementById('jointime_label');
-            jointime_label.value = res[0]['jointime'];
-            let card_label = document.getElementById('card_label');
-            card_label.value = res[0]['cardid'];
+            let place_label = document.getElementById('phone_label');
+            place_label.value = res[0]['phone'];
+            let jointime_label = document.getElementById('license_plate_label');
+            jointime_label.value = res[0]['license_plate'];
             // console.log(res);
             // console.log(res[0]["log"][month]);
             let keys ='';
@@ -38,8 +36,8 @@ function load_data(month_type = 'this') {
                 let logs = res[0]['log'][month];
                 // console.log('length');
                 // console.log(res_length  );
-                // console.log('logs')
-                // console.log(logs);
+                console.log('logs')
+                console.log(logs);
                 // console.log('keys')
                 // console.log(keys);
                 // console.log('key'+keys[0]);
@@ -63,7 +61,7 @@ function load_data(month_type = 'this') {
                     // console.log(logs[keys[log]]);
                     currentmonth_log.innerHTML += '\
                 <tr style="height:20px" class="align-text-top">\
-                <td>'+ keys[log] + '</td><td>' + logs[keys[log]]['clockin'] + '</td><td>' + logs[keys[log]]['workovertime'] + '</td><td>' + logs[keys[log]]['clockout'] + '</td><td>' + logs[keys[log]]['duration'][0][0] + ' hr ' + logs[keys[log]]['duration'][0][1] + ' m</td><td>' + logs[keys[log]]['duration'][1][0] + ' hr ' + logs[keys[log]]['duration'][1][1] + ' m</td></tr>\
+                <td>'+ keys[log] + '</td><td>' + logs[keys[log]]['in'] + '</td><td>' + logs[keys[log]]['out'] + '</td><td>' + logs[keys[log]]['duration'][0][0] + ' hr ' + logs[keys[log]]['duration'][0][1] + ' m</td><td>' + logs[keys[log]]['fee'] + '</td><td>' + logs[keys[log]]['status'] + '</td></tr>\
                 </tr>';
                 }
             }
@@ -102,6 +100,6 @@ function save() {
     jointime_label.disabled = true;
     card_label.classList = 'form-control border-white bg-white text-start ';
     card_label.disabled = true;
-    fetch('/api/manage?' + new URLSearchParams({ "name": name_label.value, 'place': place_label.value,'jointime': jointime_label.value, 'cardid': card_label.value, 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'PUT' })
+    fetch('http://127.0.0.1:5000/api/user?' + new URLSearchParams({ "name": name_label.value, 'place': place_label.value,'jointime': jointime_label.value, 'cardid': card_label.value, 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'PUT' })
         .then(response => (load_data()))
 }

@@ -40,6 +40,7 @@ class UserAPI(Resource):
         if args['key']:
             filter = {args['key']:args['value']}
         result = User.get_user(filter)
+        print(result)
         return result
 
 
