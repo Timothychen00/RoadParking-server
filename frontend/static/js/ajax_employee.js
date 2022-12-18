@@ -15,7 +15,7 @@ function load_data(month_type = 'this') {
         document.getElementById('this').classList.remove('active');
     }
 
-    fetch("/api/manage?" + new URLSearchParams({ 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'GET' })
+    fetch("/api/user?" + new URLSearchParams({ 'key': '_id', 'value': window.location.href.split('/')[3].split('#')[0] }), { method: 'GET' })
         .then(res => (res.json()))
         .then((res) => {
             let name_label = document.getElementById('name_label');

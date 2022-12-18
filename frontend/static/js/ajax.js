@@ -77,7 +77,7 @@ function inject_html(data) {
 				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> alive</td>';
 			else
 				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> lost</td>';
-			pre_fill="<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>';
+			pre_fill="<tr><td>" + data[i]['_id'] + "</td><td>" + data[i]["type"] + "</td>"+ status_tag + "<td>" + data[i]["ip"] + "</td><td>" + data[i]["mac"] + '</td>';
 		}else if(window.model=='user'){
 			pre_fill="<tr><td>" + data[i]['_id'] + "</td><td><a href='/" + data[i]['_id'] + "'>" + data[i]["name"] + "</a></td><td>" + data[i]["phone"] + "</td><td>" + data[i]["license_plate"] + '</td>';
 		}else if (window.model=='parking'){
@@ -85,7 +85,7 @@ function inject_html(data) {
 				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> empty</td>';
 			else
 				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> inuse</td>';
-			pre_fill="<tr><td><a href='/" + data[i]['_id'] + "'>" + data[i]['_id'] + "</a></td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["machine"] + '</td>';
+			pre_fill="<tr><td>" + data[i]['_id'] + "</td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["machine"] + '</td>';
 		}
 		pre_fill+=generate_modal(data[i]['_id']);
 		users.innerHTML += pre_fill;
