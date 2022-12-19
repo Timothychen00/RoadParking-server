@@ -32,6 +32,7 @@ class Parking:
             'status' : "", # empty or inuse 
             'position':[],
             'license_plate' : "",
+            'error':'',
             'machine' : ""
         }
         
@@ -62,9 +63,8 @@ class Parking:
                 if 'status' in data:
                     result=DB.db['parking'].find_one(key_value)
                     if result['status']!=data['status']:#有需要更新 車位的狀態不一樣      data    status license_plate
-                        print(data)
-                        print(data['license_plate'])
-                        user=User.get_user({'license_plate':data['license_plate']})[0]
+                        
+                        user=User.get_user({'license_plate':result['license_plate']})[0]
                         print(user)
                         log=user['log']
                         month,day,now_time=get_date()
@@ -94,7 +94,7 @@ class Parking:
                             log[month][day]['in']=now_time
                             # log[]
                             Parking.edit_parking(key_value,{'status':'inuse'},overwrite=True)
-                        User.edit_user({'license_plate':data['license_plate']},{'log':log})
+                        User.edit_user({'license_plate':result['license_plate']},{'log':log})
                         return 'done'
                     else:
                         return 'non chanegd'
@@ -110,6 +110,8 @@ class Parking:
         result = check_document('parking',key_value,isSingle)
         if not result['err']:
             data=DB.db['parking'].find(key_value)
+            if isSingle:
+                return list(data)[0]
             return list(data)
         
         if result['err']=='not found':
@@ -157,6 +159,8 @@ class Machine:
         result = check_document('machine',key_value,isSingle)
         if not result['err']:
             data=DB.db['machine'].find(key_value)
+            if isSingle:
+                return list(data)[0]
             return list(data)
         
         if result['err']=='not found':
@@ -200,6 +204,8 @@ class User:
         result = check_document('users',key_value,isSingle)
         if not result['err']:
             data=DB.db['users'].find(key_value)
+            if isSingle:
+                return list(data)[0]
             return list(data)
         
         if result['err']=='not found':

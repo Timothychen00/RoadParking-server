@@ -5,6 +5,7 @@ data={
     'status' : "empty", # empty or inuse 
     'license_plate' : "EAC-8668",
     'position':['121.519','25.035'],
+    'error':'',
     'machine' : "E01"
 }
 Parking.create_parking(data)

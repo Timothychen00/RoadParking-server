@@ -62,7 +62,7 @@ function inject_html(data) {
 	else if (window.model=='user')
 		title_label=['_id','name','phone','license_plate','delete']
 	else
-		title_label=['_id','status','license_plate','position','machine','delete'];
+		title_label=['_id','status','license_plate','position','machine','error','delete'];
 
 	title.innerHTML='';
 	for(let k in title_label)
@@ -85,7 +85,7 @@ function inject_html(data) {
 				status_tag='<td style="color:green"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> empty</td>';
 			else
 				status_tag='<td style="color:red"><ion-icon name="radio-button-on-outline" style="font-size:10px"></ion-icon> inuse</td>';
-			pre_fill="<tr><td>" + data[i]['_id'] + "</td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["machine"] + '</td>';
+			pre_fill="<tr><td>" + data[i]['_id'] + "</td>" + status_tag + "<td>" + data[i]["license_plate"] + "</td><td>" + data[i]["position"] + "</td><td>" + data[i]["machine"] + '</td><td>' + data[i]["error"] + '</td>';
 		}
 		pre_fill+=generate_modal(data[i]['_id']);
 		users.innerHTML += pre_fill;
