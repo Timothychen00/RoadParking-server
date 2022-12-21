@@ -3,7 +3,7 @@ from server.models import Parking
 data={
     '_id' : "TW-1-1",
     'status' : "empty", # empty or inuse 
-    'license_plate' : "EAC-8668",
+    'license_plate' : "EAC8668",
     'position':['121.519','25.035'],
     'error':'',
     'machine' : "E01"

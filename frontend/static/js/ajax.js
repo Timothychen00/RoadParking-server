@@ -14,7 +14,7 @@ async function load_data() {
 
 window.isClick=false;
 window.onload = ()=>{window.model='machine';load_data();set('machine')};
-window.setInterval(load_data,5000);//auto reload 
+window.setInterval(load_data,7000);//auto reload 
 
 function delete_data(id) {
 	console.log(id);

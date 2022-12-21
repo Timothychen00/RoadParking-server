@@ -41,6 +41,7 @@ def handle_mqtt_message(client, userdata, message):
     
     # one for all
     if data['topic']=='RoadParking/Machine':# update for each machine status
+        print('Machine\n\n')
         #status
         #ip
         #other information
@@ -53,13 +54,17 @@ def handle_mqtt_message(client, userdata, message):
 
     # one for each
     elif data['topic']=='RoadParking/Parking':# update for each parking space
-        json_data-json.loads(data['payload'])
-        print(json_data)
-        Parking.get_parking(json_data[0])
+        print('Parking\n\n')
+        json_data=json.loads(data['payload'])
+        print(json_data[0],json_data[1])
+        #use mac to get parking
+        machine=Machine.get_machine(json_data[0],isSingle=True)
+        # print(Parking.edit_parking({'machine':machine['_id']},{'license_plate':json_data[1]['license_plate']}))
+        # if 'license_plate' not in json_data[1]:
+        #     print(Parking.edit_parking({'machine':machine['_id']},json_data[1],overwrite=True))
+        print(Parking.edit_parking({'machine':machine['_id']},json_data[1]))
 
-        # for i in json_data:
-        #     print(Parking.edit_parking())
 
 
 if __name__=='__main__':
-    app.run(port=5000,debug=False)
+    app.run(port=5000,debug=False,host='0.0.0.0')

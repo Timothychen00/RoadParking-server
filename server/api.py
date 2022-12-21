@@ -81,7 +81,7 @@ class ParkingAPI(Resource):
         if args['key']:
             filter = {args['key']:args['value']}
         result = Parking.get_parking(filter)
-        print(result)
+        # print(result)
         return result
     
     

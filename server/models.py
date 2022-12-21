@@ -64,11 +64,12 @@ class Parking:
                     result=DB.db['parking'].find_one(key_value)
                     if result['status']!=data['status']:#有需要更新 車位的狀態不一樣      data    status license_plate
                         
-                        user=User.get_user({'license_plate':result['license_plate']})[0]
-                        print(user)
-                        log=user['log']
                         month,day,now_time=get_date()
                         if data['status']=='empty':#離開，準備更新時間的部分
+                            # print('mydata:',data['license_plate'])
+                            user=User.get_user({'license_plate':result['license_plate']},isSingle=True)
+                            print(user)
+                            log=user['log']
                             if not month in log:
                                 return '請先將車停入'
                             if not day in log[month]:
@@ -85,17 +86,22 @@ class Parking:
                             
                             # return '記錄完成'
                             Parking.edit_parking(key_value,{'status':'empty'},overwrite=True)
+                            User.edit_user({'license_plate':result['license_plate']},{'log':log})
+                            return 'done'
 
                         else:#開始記錄時間
+                            user=User.get_user({'license_plate':data['license_plate']},isSingle=True)
+                            print(user)
+                            log=user['log']
                             if not month in log:
                                 log[month]={}
 
                             log[month][day]={'in':'0:0:0','out':'0:0:0','duration':[0,0],'fee':'0','status':'0'}
                             log[month][day]['in']=now_time
                             # log[]
-                            Parking.edit_parking(key_value,{'status':'inuse'},overwrite=True)
-                        User.edit_user({'license_plate':result['license_plate']},{'log':log})
-                        return 'done'
+                            Parking.edit_parking(key_value,{'status':'inuse','license_plate':data['license_plate']},overwrite=True)
+                            User.edit_user({'license_plate':data['license_plate']},{'log':log})
+                            return 'done'
                     else:
                         return 'non chanegd'
             DB.db['parking'].update_one(key_value,{'$set':data})
