@@ -6,7 +6,7 @@ load_dotenv()
 # ISingle False  >=1
 
 class DB():
-    client=pymongo.MongoClient("mongodb+srv://admin:"+os.environ['DB_PASS']+"@roadparking.zgcphsq.mongodb.net/?retryWrites=true&w=majority",tls=True,tlsAllowInvalidCertificates=True)
+    client=pymongo.MongoClient(os.environ['DB_STRING'],tls=True,tlsAllowInvalidCertificates=True)
     db=client.RoadParking
 
 def check_document(collection='users',key_value={},isSingle:bool=True):# 返回值都是err的錯誤

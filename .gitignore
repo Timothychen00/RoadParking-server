@@ -1,2 +1,7 @@
 
 .env
+.DS_Store
+server/__pycache__/models.cpython-39.pyc
+server/__pycache__/models.cpython-39.pyc
+test/__pycache__/user_test.cpython-39.pyc
+test/__pycache__/user_test.cpython-39.pyc
