@@ -121,7 +121,7 @@
     <!--map api-->
     <script id="googlemapapi"> </script>
     <script>
-        fetch('http://127.0.0.1:5000/api/manage', { method: 'GET',   headers: { 'Content-Type': 'text/plain' } })
+        fetch('http://127.0.0.1:5000/api/google', { method: 'GET',   headers: { 'Content-Type': 'text/plain' } })
             .then((res) => { document.getElementById('googlemapapi').src=res.text() });
     </script>
 

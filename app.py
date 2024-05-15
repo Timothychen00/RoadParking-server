@@ -29,7 +29,7 @@ api.add_resource(MachineAPI,'/api/machine')
 
 @app.route('/api/google')
 def googleAPI():
-    return "https://maps.googleapis.com/maps/api/js?key=AIzaSyCktW2OCDka6ZgkweiFo-v_omo2jPx4SX4&callback=initMap"
+    return os.environ['GOOGLE_API']
 
 # mqtt
 @mqtt.on_connect()
