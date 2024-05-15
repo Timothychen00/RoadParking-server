@@ -119,7 +119,12 @@
 
     <script src="/static/js/map.js"></script>
     <!--map api-->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCktW2OCDka6ZgkweiFo-v_omo2jPx4SX4&callback=initMap"> </script>
+    <script id="googlemapapi"> </script>
+    <script>
+        fetch('http://127.0.0.1:5000/api/manage', { method: 'GET',   headers: { 'Content-Type': 'text/plain' } })
+            .then((res) => { document.getElementById('googlemapapi').src=res.text() });
+    </script>
+
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"

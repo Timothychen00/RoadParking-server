@@ -27,6 +27,10 @@ api.add_resource(UserAPI,'/api/user')
 api.add_resource(ParkingAPI,'/api/parking')
 api.add_resource(MachineAPI,'/api/machine')
 
+@app.route('/api/google')
+def googleAPI():
+    return "https://maps.googleapis.com/maps/api/js?key=AIzaSyCktW2OCDka6ZgkweiFo-v_omo2jPx4SX4&callback=initMap"
+
 # mqtt
 @mqtt.on_connect()
 def handle_connect(client, userdata, flags, rc):
